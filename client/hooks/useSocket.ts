@@ -14,6 +14,8 @@ import {
   RotateQuadrantPayload,
   JoinRoomPayload,
   RejoinRoomPayload,
+  QuadrantIndex,
+  RotationDirection,
 } from '@/types/game';
 
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3001';
@@ -89,6 +91,11 @@ export function useSocket() {
           forfeitIntervalRef.current = null;
         }
       }, 1000);
+    });
+
+    socket.on('quadrant_rotated', (payload: { quadrant: QuadrantIndex; direction: RotationDirection }) => {
+      // Trigger the local animation. Buffering in setGameState will handle the rest.
+      useGameStore.getState().startRotation(payload.quadrant, payload.direction);
     });
 
     socket.on('opponent_reconnected', () => {

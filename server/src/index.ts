@@ -174,6 +174,7 @@ io.on('connection', (socket) => {
       return;
     }
 
+    io.to(roomCode).emit('quadrant_rotated', { quadrant, direction });
     io.to(roomCode).emit('game_state', { gameState: result.gameState });
     console.log(
       `[Move] Quadrant ${quadrant} rotated ${direction} in room ${roomCode}` +
