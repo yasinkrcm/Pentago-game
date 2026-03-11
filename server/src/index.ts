@@ -178,7 +178,7 @@ io.on('connection', (socket) => {
     io.to(roomCode).emit('game_state', { gameState: result.gameState });
     console.log(
       `[Move] Quadrant ${quadrant} rotated ${direction} in room ${roomCode}` +
-        (result.winnerColor ? ` → Winner: ${result.winnerColor}` : '')
+      (result.winnerColor ? ` → Winner: ${result.winnerColor}` : '')
     );
   });
 
@@ -214,7 +214,7 @@ app.get('/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 7676;
 server.listen(PORT, () => {
   console.log(`🚀 Pentago server running on http://localhost:${PORT}`);
 });
