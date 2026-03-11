@@ -50,9 +50,33 @@ export default function HomePage() {
 
   const handleCopy = () => {
     if (!roomCode) return;
-    navigator.clipboard.writeText(roomCode);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    
+    // Modern approach
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(roomCode)
+        .then(() => {
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2000);
+        })
+        .catch(() => fallbackCopy(roomCode));
+    } else {
+      fallbackCopy(roomCode);
+    }
+  };
+
+  const fallbackCopy = (text: string) => {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    document.body.appendChild(textArea);
+    textArea.select();
+    try {
+      document.execCommand('copy');
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      toast.error('Kopyalanamadı, lütfen elle kopyala.');
+    }
+    document.body.removeChild(textArea);
   };
 
   return (

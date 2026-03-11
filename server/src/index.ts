@@ -174,8 +174,10 @@ io.on('connection', (socket) => {
       return;
     }
 
-    io.to(roomCode).emit('quadrant_rotated', { quadrant, direction });
-    io.to(roomCode).emit('game_state', { gameState: result.gameState });
+    io.to(roomCode).emit('game_state', { 
+      gameState: result.gameState, 
+      rotationMove: { quadrant, direction } 
+    });
     console.log(
       `[Move] Quadrant ${quadrant} rotated ${direction} in room ${roomCode}` +
       (result.winnerColor ? ` → Winner: ${result.winnerColor}` : '')

@@ -74,6 +74,10 @@ export function useSocket() {
     });
 
     socket.on('game_state', (payload: GameStatePayload) => {
+      // If the update includes a rotation, trigger the animation first
+      if (payload.rotationMove) {
+        useGameStore.getState().startRotation(payload.rotationMove.quadrant, payload.rotationMove.direction);
+      }
       setGameState(payload.gameState);
     });
 
@@ -93,10 +97,7 @@ export function useSocket() {
       }, 1000);
     });
 
-    socket.on('quadrant_rotated', (payload: { quadrant: QuadrantIndex; direction: RotationDirection }) => {
-      // Trigger the local animation. Buffering in setGameState will handle the rest.
-      useGameStore.getState().startRotation(payload.quadrant, payload.direction);
-    });
+
 
     socket.on('opponent_reconnected', () => {
       toast.success('Rakip yeniden bağlandı!');

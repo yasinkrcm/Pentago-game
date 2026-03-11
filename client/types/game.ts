@@ -64,6 +64,10 @@ export interface GameStartPayload {
 
 export interface GameStatePayload {
   gameState: GameState;
+  rotationMove?: {
+    quadrant: QuadrantIndex;
+    direction: RotationDirection;
+  };
 }
 
 export interface OpponentDisconnectedPayload {
